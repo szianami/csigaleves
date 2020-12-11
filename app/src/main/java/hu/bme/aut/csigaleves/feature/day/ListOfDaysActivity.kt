@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.bme.aut.csigaleves.R
-import kotlinx.android.synthetic.main.content_actual_day.*
+import kotlinx.android.synthetic.main.content_list_of_days.*
 
 
-class ActualDayActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener, AddDayDialogFragment.AddDayDialogListener {
+class ListOfDaysActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener, AddDayDialogFragment.AddDayDialogListener {
 // az activity, ami a kezdőképernyőnk és listázva látjuk rajta a napjainkat
-    // van egy adapter osztálya, ami a tőle kapott napok menedzselését, hozzáadását végzi
+    // van egy adapter osztálya, ami a tőle kapott napok menedzselését, hozzáadását végzi a recyclerviewnak
     private lateinit var adapter: DayAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_actual_day)
+        setContentView(R.layout.activity_list_of_days)
         initFab()
         initRecyclerView()
     }
