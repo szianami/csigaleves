@@ -1,14 +1,14 @@
 package hu.bme.aut.csigaleves.feature.day
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.bme.aut.csigaleves.R
 import kotlinx.android.synthetic.main.content_actual_day.*
-import java.text.SimpleDateFormat
-import java.util.Date
+
 
 class ActualDayActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener, AddDayDialogFragment.AddDayDialogListener {
 // az activity, ami a kezdőképernyőnk és listázva látjuk rajta a napjainkat
@@ -47,6 +47,14 @@ class ActualDayActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener,
         adapter.addDay("2020-12-01")
         adapter.addDay("2020-12-00")
         MainRecyclerView.adapter = adapter
+
+        val divider = DividerItemDecoration(
+            MainRecyclerView.getContext(),
+            DividerItemDecoration.VERTICAL
+        )
+        val dividerDrawable = ContextCompat.getDrawable(this, R.drawable.list_item_divider)
+        divider.setDrawable(dividerDrawable!!)
+        MainRecyclerView.addItemDecoration(divider)
     }
 
     override fun onDaySelected(day: String?) {
