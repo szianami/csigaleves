@@ -9,7 +9,7 @@ interface ConsumedFoodDao {
 
     // lekérjük az adott nap elfogyasztott ételeket
     @Query("SELECT * FROM consumedfood WHERE date LIKE :date")
-    fun loadFoodsByDate(date: String, last: String): List<ConsumedFood>
+    fun loadFoodsByDate(date: String): List<ConsumedFood>
 
     @Insert
     fun insert(shoppingItems: ConsumedFood): Long

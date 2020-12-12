@@ -3,20 +3,18 @@ package hu.bme.aut.csigaleves.feature.day
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.csigaleves.R
 import kotlinx.android.synthetic.main.list_of_days_item.view.*
 
 // A listát RecyclerView segítségével szeretnénk megjeleníteni, ezért az adapter a RecyclerView.Adapter osztályból származik.
 // Az adapter a modell elemeket egy listában tárolja.
-class DayAdapter internal constructor(private val listener: OnDaySelectedListener?) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
+class DayAdapter internal constructor(private val listener: DayClickListener?) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
     private val days: MutableList<String>
 
-    interface OnDaySelectedListener {
+    interface DayClickListener {
         fun onDaySelected(day: String?)
-    }
-
-    interface OnDayRemovedListener {
         fun onDayRemoved(day: String?)
     }
 
@@ -65,9 +63,7 @@ class DayAdapter internal constructor(private val listener: OnDaySelectedListene
 
         init {
             itemView.DayItemNameTextView.setOnClickListener { listener?.onDaySelected(item) }
-            itemView.DayItemRemoveButton.setOnClickListener {
-                removeDay(item)
-            }
+            itemView.DayItemRemoveButton.setOnClickListener { listener?.onDayRemoved(item) }
         }
     }
 

@@ -3,17 +3,20 @@ package hu.bme.aut.csigaleves.feature.day
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.bme.aut.csigaleves.R
 import kotlinx.android.synthetic.main.content_list_of_days.*
 
-
-class ListOfDaysActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener, AddDayDialogFragment.AddDayDialogListener {
+class ListOfDaysActivity : AppCompatActivity(), DayAdapter.DayClickListener, AddDayDialogFragment.AddDayDialogListener, ConfirmDialogFragment.ConfirmDialogListener {
 // az activity, ami a kezdőképernyőnk és listázva látjuk rajta a napjainkat
     // van egy adapter osztálya, ami a tőle kapott napok menedzselését, hozzáadását végzi a recyclerviewnak
     private lateinit var adapter: DayAdapter
+
+    protected var dayToRemove: String? = null
+    protected lateinit var confirmDialog: ConfirmDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +73,18 @@ class ListOfDaysActivity : AppCompatActivity(), DayAdapter.OnDaySelectedListener
     override fun onDayRemoved(day: String?) {
         // var formatter = new SimpleDateFormat ("yyyy-MM-dd");
         // nem kell neki date formában, majd azt az adapter kezeli
-        adapter.removeDay(day)
+        dayToRemove = day
+        confirmDialog = ConfirmDialogFragment()
+        confirmDialog.show(supportFragmentManager, "ConfirmDialogFragment")
+
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        adapter.removeDay(dayToRemove)
+        confirmDialog.dismiss()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        confirmDialog.dismiss()
     }
 }
