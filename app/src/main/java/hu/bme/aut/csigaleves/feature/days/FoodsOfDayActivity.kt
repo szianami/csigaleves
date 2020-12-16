@@ -2,16 +2,18 @@ package hu.bme.aut.csigaleves.feature.days
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.bme.aut.csigaleves.R
 import hu.bme.aut.csigaleves.feature.data.ConsumedFood
 import hu.bme.aut.csigaleves.feature.data.ConsumedFoodDatabase
+import hu.bme.aut.csigaleves.feature.network.FoodData
+import hu.bme.aut.csigaleves.feature.network.NetworkManager
 import kotlinx.android.synthetic.main.activity_foods_of_day.*
 import kotlinx.android.synthetic.main.content_list_of_foods.*
 import kotlin.concurrent.thread
@@ -110,9 +112,17 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
         }
     }
 
+    fun onSuccess(foodData: FoodData) {
+        Log.i("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA")
+    }
+
+    fun onError(err: Throwable) {
+        Log.i("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA err")
+    }
+
     override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
-
-
+        val nameAndAmount = dialogItem.name // TODO add amount
+        NetworkManager.getFoodData(nameAndAmount, ::onSuccess, ::onError)
 
         /*
         thread {

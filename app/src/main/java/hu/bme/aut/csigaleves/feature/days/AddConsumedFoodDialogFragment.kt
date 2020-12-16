@@ -15,7 +15,7 @@ import hu.bme.aut.csigaleves.feature.data.ConsumedFood
 import hu.bme.aut.csigaleves.feature.network.FoodData
 import hu.bme.aut.csigaleves.feature.network.FoodDataHolder
 
-class AddConsumedFoodDialogFragment : DialogFragment(), FoodDataHolder {
+class AddConsumedFoodDialogFragment : DialogFragment() {
 
     private lateinit var nameEditText: EditText
     private lateinit var amountEditText: EditText
@@ -73,7 +73,5 @@ class AddConsumedFoodDialogFragment : DialogFragment(), FoodDataHolder {
         return contentView
     }
 
-    override fun getFoodData(): FoodData? {
-        return foodData
-    }
+
 }
