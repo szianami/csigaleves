@@ -12,11 +12,14 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.internal.ViewUtils.getContentView
 import hu.bme.aut.csigaleves.R
 import hu.bme.aut.csigaleves.feature.data.ConsumedFood
+import hu.bme.aut.csigaleves.feature.network.FoodData
+import hu.bme.aut.csigaleves.feature.network.FoodDataHolder
 
-class AddConsumedFoodDialogFragment : DialogFragment()  {
+class AddConsumedFoodDialogFragment : DialogFragment(), FoodDataHolder {
 
     private lateinit var nameEditText: EditText
     private lateinit var amountEditText: EditText
+    private var foodDataHolder: FoodDataHolder? = null
 
     //callback interface, amelyen keresztül a dialógust megjelenítő Activity értesülhet az új elem létrehozásáról.
     interface NewConsumedFoodDialogListener {
@@ -29,6 +32,7 @@ class AddConsumedFoodDialogFragment : DialogFragment()  {
         super.onAttach(context)
         listener = context as? NewConsumedFoodDialogListener
             ?: throw RuntimeException("Activity must implement the NewConsumedFoodDialogListener interface!")
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -53,6 +57,7 @@ class AddConsumedFoodDialogFragment : DialogFragment()  {
         val id = null
         val name = nameEditText.text.toString()
         val amount = amountEditText.text.toString().toInt()
+        // http post
         return ConsumedFood(id, name, amount)
     }
 
@@ -66,5 +71,9 @@ class AddConsumedFoodDialogFragment : DialogFragment()  {
         nameEditText = contentView.findViewById(R.id.NameEditText)
         amountEditText = contentView.findViewById(R.id.AmountEditText)
         return contentView
+    }
+
+    override fun getFoodData(): FoodData? {
+        return foodData
     }
 }

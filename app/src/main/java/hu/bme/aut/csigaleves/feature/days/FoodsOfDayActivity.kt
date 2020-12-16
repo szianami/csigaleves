@@ -111,6 +111,10 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
     }
 
     override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
+
+
+
+        /*
         thread {
             val food = ConsumedFood(name = dialogItem.name, amount = dialogItem.amount, date = date.toString())
             val newId = database.consumedFoodDao().insert(food)
@@ -122,6 +126,7 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
                 loadItemsInBackground()
             }
         }
+         */
     }
 
     override fun onFoodSelected(food: ConsumedFood?) {
