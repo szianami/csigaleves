@@ -43,7 +43,6 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
     private fun initFab() {
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
-            // todo : show actual day dialog
             AddDateDialogFragment().show(supportFragmentManager, AddDateDialogFragment::class.java.simpleName)
         }
     }
@@ -108,8 +107,11 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
         dateToRemove = date
         confirmDialog = ConfirmDialogFragment()
         confirmDialog.show(supportFragmentManager, "ConfirmDialogFragment")
-        val dbItems = database.consumedFoodDao().getFoodsByDate(date!!)
-        for (item in dbItems) database.consumedFoodDao().deleteItem(item)
+
+        thread {
+            val dbItems = database.consumedFoodDao().getFoodsByDate(date!!)
+            for (item in dbItems) database.consumedFoodDao().deleteItem(item)
+        }
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
