@@ -1,4 +1,4 @@
-package hu.bme.aut.csigaleves.feature.day
+package hu.bme.aut.csigaleves.feature.listOfDates
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,16 +9,15 @@ import android.widget.EditText
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatDialogFragment
 import hu.bme.aut.csigaleves.R
-import kotlinx.coroutines.NonCancellable.cancel
 
-class AddDayDialogFragment : AppCompatDialogFragment() {
+class AddDateDialogFragment : AppCompatDialogFragment() {
     private var listener: AddDayDialogListener? = null
     private var editText: EditText? = null
 
     interface AddDayDialogListener {
-        fun onDayAdded(day: String)
+        fun onDateAdded(day: String)
         /// ????
-        fun onDayRemoved(day: String?)
+        fun onDateRemoved(date: String?)
     }
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -35,7 +34,7 @@ class AddDayDialogFragment : AppCompatDialogFragment() {
             .setTitle(R.string.new_day)
             .setView(contentView)
             .setPositiveButton(R.string.ok) { _, _ ->
-                listener?.onDayAdded(
+                listener?.onDateAdded(
                     editText?.text.toString()
                 )
             }

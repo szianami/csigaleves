@@ -1,4 +1,4 @@
-package hu.bme.aut.csigaleves.feature.day
+package hu.bme.aut.csigaleves.feature.listOfDates
 
 import android.app.Dialog
 import android.content.Context

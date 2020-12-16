@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".feature.days.FoodsOfDayActivity"></activity>
         <activity
-            android:name=".feature.day.ListOfDaysActivity"
+            android:name=".feature.listOfDates.ListOfDatesActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
