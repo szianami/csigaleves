@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_foods_of_day.*
 import kotlinx.android.synthetic.main.content_list_of_foods.*
 import kotlin.concurrent.thread
 
-class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener {
+class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, AddConsumedFoodDialogFragment.NewConsumedFoodDialogListener {
     private lateinit var adapter: DayAdapter
     private var date : String? = null
     private var sumKcal : Int = 0
@@ -31,18 +31,19 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foods_of_day)
         setDatabaseInstance()
-        //loadItemsInBackground()
+        initFab()
+       // loadItemsInBackground()
         setDateFromIntent(intent.extras)
         initRecyclerView()
+
     }
 
     private fun initFab() {
-
-        val fab = findViewById<FloatingActionButton>(R.id.addFoodFab)
         addFoodFab.setOnClickListener {
-            // todo : show actual day
-            //  dialog
-            // AddFoodDialogFragment().show(supportFragmentManager, AddFoodDialogFragment::class.java.simpleName)
+            AddConsumedFoodDialogFragment().show(
+                supportFragmentManager,
+                AddConsumedFoodDialogFragment.TAG
+            )
         }
     }
 
@@ -91,7 +92,7 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener {
     private fun loadItemsInBackground() {
         thread {
             if (date != null){
-                val items = database.consumedFoodDao().loadFoodsByDate(date!!)
+                val items = database.consumedFoodDao().getFoodsByDate(date!!)
                  runOnUiThread {
                    adapter.update(items)
                 }
@@ -101,7 +102,24 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener {
                 sumFiber = database.consumedFoodDao().getSumFiber(date!!)
                 sumProtein= database.consumedFoodDao().getSumProtein(date!!)
 
-                loadNutrients()
+                if (items.isNotEmpty()) {
+                    loadNutrients()
+                }
+
+            }
+        }
+    }
+
+    override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
+        thread {
+            val food = ConsumedFood(name = dialogItem.name, amount = dialogItem.amount, date = date.toString())
+            val newId = database.consumedFoodDao().insert(food)
+            val newConsumedFood = food.copy(
+                id = newId
+            )
+            runOnUiThread {
+                adapter.addFood(food)
+                loadItemsInBackground()
             }
         }
     }

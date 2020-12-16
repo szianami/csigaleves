@@ -14,4 +14,5 @@
     <string name="ok">OK!</string>
     <string name="new_day">New day</string>
     <string name="cancel">Cancel</string>
+    <string name="add_consumed_food">Add consumed food</string>
 </resources>

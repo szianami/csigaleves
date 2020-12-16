@@ -70,6 +70,11 @@ class DayAdapter(private val listener: FoodClickListener?) : RecyclerView.Adapte
         notifyDataSetChanged()
     }
 
+    fun addFood(food: ConsumedFood) {
+        foods.add(food)
+        notifyDataSetChanged()
+    }
+
     fun removeFood(item: ConsumedFood?) {
         val position = foods.indexOf(item)
         foods.removeAt(position)

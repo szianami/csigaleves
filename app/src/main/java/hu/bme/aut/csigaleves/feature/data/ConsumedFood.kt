@@ -17,5 +17,5 @@ data class ConsumedFood(
     @ColumnInfo(name = "ch") val ch: Int = 1,
     @ColumnInfo(name = "protein") val protein: Int = 1,
     @ColumnInfo(name = "fiber") val fiber: Int = 1,
-    @ColumnInfo(name = "date") val date: String = "9999-99-99"
+    @ColumnInfo(name = "date") val date: String = "1000-10-10"
 )  : Parcelable { }

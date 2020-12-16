@@ -12,7 +12,7 @@ interface ConsumedFoodDao {
 
     // lekérjük az adott nap elfogyasztott ételeket
     @Query("SELECT * FROM consumedfood WHERE date LIKE :date")
-    fun loadFoodsByDate(date: String): MutableList<ConsumedFood>
+    fun getFoodsByDate(date: String): MutableList<ConsumedFood>
 
     @Query("SELECT SUM(kcal) FROM consumedfood where date LIKE :date")
     fun getSumKcal(date: String): Int
@@ -28,7 +28,6 @@ interface ConsumedFoodDao {
 
     @Query("SELECT SUM(fiber) FROM consumedfood where date LIKE :date")
     fun getSumFiber(date: String): Int
-
 
     @Insert
     fun insert(shoppingItems: ConsumedFood): Long

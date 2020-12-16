@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.list_of_dates_item.view.*
 class DateAdapter internal constructor(private val listener: DateClickListener?) : RecyclerView.Adapter<DateAdapter.DateViewHolder>() {
     private val dates: MutableList<String>
 
-
     interface DateClickListener {
         fun onDateSelected(date: String?)
         fun onDateRemoved(date: String?)

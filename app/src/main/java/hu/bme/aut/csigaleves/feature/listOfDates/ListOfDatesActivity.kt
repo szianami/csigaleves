@@ -23,19 +23,14 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
     private lateinit var adapter: DateAdapter
     private lateinit var database: ConsumedFoodDatabase
 
-    protected var dateToRemove: String? = null
-    protected lateinit var confirmDialog: ConfirmDialogFragment
+    private var dateToRemove: String? = null
+    private lateinit var confirmDialog: ConfirmDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_of_dates)
-        //database = ConsumedFoodDatabase.getInstance(applicationContext)
         initFab()
 
-
-
-
-        // MyDatabase.getInstance(applicationContext).registrationDAO().insert(registration);
         database = Room.databaseBuilder(
             applicationContext,
             ConsumedFoodDatabase::class.java,
@@ -45,10 +40,7 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
         initRecyclerView()
     }
 
-
-
     private fun initFab() {
-
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             // todo : show actual day dialog
@@ -56,26 +48,14 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
         }
     }
 
-    // feltölti a listánkat 3 mock adattal
-    // ezt később úgy is lehet hogy a szerializált adatokból olvassa őket vissza
-
     private fun initRecyclerView() {
 
         adapter = DateAdapter(this)
         MainRecyclerView.layoutManager = LinearLayoutManager(this)
         MainRecyclerView.adapter = adapter
+
         loadItemsInBackground()
-        /*
-        adapter.addDate("2020-12-08")
-        adapter.addDate("2020-12-07")
-        adapter.addDate("2020-12-06")
-        adapter.addDate("2020-12-05")
-        adapter.addDate("2020-12-04")
-        adapter.addDate("2020-12-03")
-        adapter.addDate("2020-12-02")
-        adapter.addDate("2020-12-01")
-        adapter.addDate("2020-12-00")
-        */
+
         val divider = DividerItemDecoration(
             MainRecyclerView.getContext(),
             DividerItemDecoration.VERTICAL
@@ -86,12 +66,13 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
     }
 
     private fun loadItemsInBackground() {
+        /*
         val newItem1 = ConsumedFood(null,"grillcsirke", 150, 100, 15, 20, 40, 1, "2020-12-10")
         val newItem2 = ConsumedFood(null,"fröccsöntött dinoszaurusz", 100, 900, 15, 20, 40, 1, "2020-12-10")
         val newItem3 = ConsumedFood(null,"nyúlhús", 350, 170, 85, 24, 40, 10, "2020-12-11")
         val newItem4 = ConsumedFood(null,"banán", 550, 870, 15, 240, 40, 20, "2020-12-11")
         val newItem5 = ConsumedFood(null,"kedves ételed", 50, 100, 154, 204, 40, 145, "2020-12-11")
-/*
+
         thread {
             val newId1 = database.consumedFoodDao().insert(newItem1)
             val newId2= database.consumedFoodDao().insert(newItem2)
@@ -102,7 +83,7 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
                 adapter.addDate(newItem1.date)
             }
         }
-*/
+        */
 
         thread {
             val items = database.consumedFoodDao().getDates()
@@ -110,7 +91,6 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
                 adapter.update(items)
             }
         }
-
 
     }
 
@@ -121,17 +101,15 @@ class ListOfDatesActivity : AppCompatActivity(), DateAdapter.DateClickListener, 
     }
 
     override fun onDateAdded(date: String) {
-       // var formatter = new SimpleDateFormat ("yyyy-MM-dd");
-       // nem kell neki date formában, majd azt az adapter kezeli
         adapter.addDate(date)
     }
 
     override fun onDateRemoved(date: String?) {
-        // var formatter = new SimpleDateFormat ("yyyy-MM-dd");
-        // nem kell neki date formában, majd azt az adapter kezeli
         dateToRemove = date
         confirmDialog = ConfirmDialogFragment()
         confirmDialog.show(supportFragmentManager, "ConfirmDialogFragment")
+        val dbItems = database.consumedFoodDao().getFoodsByDate(date!!)
+        for (item in dbItems) database.consumedFoodDao().deleteItem(item)
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
