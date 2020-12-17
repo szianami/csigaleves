@@ -71,7 +71,7 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
             bundle.apply {
                 //Intent with data
                 date = getString("date")
-                DateOfDayTextView.text = date
+                setTitle(date)
             }
         }
     }
@@ -121,10 +121,10 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
     }
 
     override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
-        val nameAndAmount = dialogItem.name // TODO add amount
-        NetworkManager.getFoodData(nameAndAmount, ::onSuccess, ::onError)
+      //  val nameAndAmount = dialogItem.name // TODO add amount
+      //  NetworkManager.getFoodData(nameAndAmount, ::onSuccess, ::onError)
 
-        /*
+
         thread {
             val food = ConsumedFood(name = dialogItem.name, amount = dialogItem.amount, date = date.toString())
             val newId = database.consumedFoodDao().insert(food)
@@ -136,7 +136,7 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
                 loadItemsInBackground()
             }
         }
-         */
+
     }
 
     override fun onFoodSelected(food: ConsumedFood?) {
