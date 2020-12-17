@@ -1,6 +1,7 @@
 package hu.bme.aut.csigaleves.feature.network
 
 import android.os.Handler
+import android.util.Log
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -32,16 +33,9 @@ object NetworkManager {
         val handler = Handler()
         Thread {
             try {
-                //val response = call.execute().body()!!
-
-                val aa = call.execute()
-
-                android.util.Log.i("AAAAAAAAAAAAAAAAAAAAAA2",aa.isSuccessful().toString())
-                android.util.Log.i("AAAAAAAAAAAAAAAAAAAAAA3",aa.code().toString())
-                android.util.Log.i("AAAAAAAAAAAAAAAAAAAAAA","1")
-                val response = aa.body()!!
-
-
+                val response = call.execute().body()!!
+                //call.execute().isSuccessful()
+                //call.execute().code()
                 handler.post { onSuccess(response) }
 
             } catch (e: Exception) {
@@ -51,11 +45,11 @@ object NetworkManager {
         }.start()
     }
     fun getFoodData(
-        nameAndAmount: String?,
-        onSuccess: KFunction1<@ParameterName(name = "foodData") FoodData, Unit>,
+        query: NutrientsQuery,
+        onSuccess: (FoodData) -> Unit,
         onError: (Throwable) -> Unit
     ){
-        val req = nutritionixApi.getFoodData(nameAndAmount)
+        val req = nutritionixApi.getFoodData(query)
         runCallOnBackgroundThread(req, onSuccess, onError)
     }
 

@@ -14,6 +14,7 @@ import hu.bme.aut.csigaleves.feature.data.ConsumedFood
 import hu.bme.aut.csigaleves.feature.data.ConsumedFoodDatabase
 import hu.bme.aut.csigaleves.feature.network.FoodData
 import hu.bme.aut.csigaleves.feature.network.NetworkManager
+import hu.bme.aut.csigaleves.feature.network.NutrientsQuery
 import kotlinx.android.synthetic.main.activity_foods_of_day.*
 import kotlinx.android.synthetic.main.content_list_of_foods.*
 import kotlin.concurrent.thread
@@ -37,7 +38,6 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
        // loadItemsInBackground()
         setDateFromIntent(intent.extras)
         initRecyclerView()
-
     }
 
     private fun initFab() {
@@ -113,20 +113,11 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
     }
 
     fun onSuccess(foodData: FoodData) {
-        Log.i("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA")
-    }
-
-    fun onError(err: Throwable) {
-        Log.i("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA err")
-    }
-
-    override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
-      //  val nameAndAmount = dialogItem.name // TODO add amount
-      //  NetworkManager.getFoodData(nameAndAmount, ::onSuccess, ::onError)
-
-
         thread {
-            val food = ConsumedFood(name = dialogItem.name, amount = dialogItem.amount, date = date.toString())
+            val food = ConsumedFood(
+                name = foodData!!.foods!![0].food_name,
+                amount = foodData!!.foods!![0]?.nf_calories,
+                date = date.toString())
             val newId = database.consumedFoodDao().insert(food)
             val newConsumedFood = food.copy(
                 id = newId
@@ -136,7 +127,16 @@ class FoodsOfDayActivity : AppCompatActivity(), DayAdapter.FoodClickListener, Ad
                 loadItemsInBackground()
             }
         }
+    }
 
+    fun onError(err: Throwable) {
+        Log.i("AAAAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAA err")
+    }
+
+    override fun onConsumedFoodAddded(dialogItem: ConsumedFood) {
+        val nameAndAmount = dialogItem.name // TODO add amount
+        val query = NutrientsQuery(query = nameAndAmount)
+        NetworkManager.getFoodData(query, ::onSuccess, ::onError)
     }
 
     override fun onFoodSelected(food: ConsumedFood?) {
